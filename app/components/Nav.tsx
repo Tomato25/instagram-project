@@ -6,7 +6,7 @@ import {
   PlusCircleIcon,
   UserGroupIcon,
   Bars3Icon,
-  HeartIcon,
+  HeartIcon, 
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/solid";

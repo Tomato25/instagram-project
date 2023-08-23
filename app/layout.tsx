@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-white">
+      <body className="bg-gray-50 h-screen overflow-y-scroll scrollbar-hide">
         <Nav />
         {children}
       </body>
