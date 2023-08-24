@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Logo from "../../public/logo.png";
 import LogoMobile from "../../public/logoMobile.png";
@@ -6,13 +8,15 @@ import {
   PlusCircleIcon,
   UserGroupIcon,
   Bars3Icon,
-  HeartIcon, 
+  HeartIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/solid";
-import profielImage from "../../public/profileImg.jpg";
+import { Session } from "next-auth";
+import { signIn,signOut } from "next-auth/react";
 
-export default function Nav() {
+
+export default function Nav({ user }: Session) {
   return (
     <div className="shadow-sm border-b bg-white sticky top-0 z-50">
       <div className="flex justify-between bg-white max-w-6xl mx-5 lg:mx-auto">
@@ -48,18 +52,32 @@ export default function Nav() {
         <div className="flex items-center justify-end space-x-4">
           <HomeIcon className="navBtn" />
           <Bars3Icon className="md:hidden cursor-pointer h-6" />
-          <div className="navBtn relative">
-            <PaperAirplaneIcon className="navBtn -rotate-45" />
-            <div className="absolute -top-1 -right-2 text-xs w-5 h-5 bg-red-400 rounded-full flex items-center justify-center animate-pulse text-white">3</div>
-          </div>
-          <PlusCircleIcon className="navBtn" />
-          <UserGroupIcon className="navBtn" />
-          <HeartIcon className="navBtn" />
-          <Image
-            src={profielImage}
-            className="h-10 w-10 rounded-full cursor-pointer"
-            alt="Profile Image"
-          />
+
+          {user ? (
+            <>
+              <div className="navBtn relative">
+                <PaperAirplaneIcon className="navBtn -rotate-45" />
+                <div className="absolute -top-1 -right-2 text-xs w-5 h-5 bg-red-400 rounded-full flex items-center justify-center animate-pulse text-white">
+                  3
+                </div>
+              </div>
+              <PlusCircleIcon className="navBtn" />
+              <UserGroupIcon className="navBtn" />
+              <HeartIcon className="navBtn" />
+              <Image
+ onClick={(e) => {
+  e.preventDefault(); signOut()}}
+                src={user?.image as string}
+                className="h-10 w-10 rounded-full cursor-pointer"
+                alt={"profiele img"}
+                width={30}
+                height={30}
+              />
+            </>
+          ) : (
+            <button onClick={(e) => {
+              e.preventDefault(); signIn("google")}}>Sign In</button>
+          )}
         </div>
       </div>
     </div>

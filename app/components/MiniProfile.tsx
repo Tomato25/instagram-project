@@ -1,5 +1,7 @@
+
 import Image from "next/image";
 import profielImage from "../../public/profileImg.jpg";
+import { signIn } from "next-auth/react";
 
 export default function MiniProfile() {
   return (
