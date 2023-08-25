@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Nav from "./components/Nav";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
@@ -16,12 +15,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
 
-  const session= await getServerSession(authOptions)
-  console.log(session)
   return (
     <html lang="en">
       <body className="bg-gray-50 h-screen overflow-y-scroll scrollbar-hide">
-        <Nav user={session?.user} expires={session?.expires as string}/>
+        <Nav />
         {children}
       </body>
     </html>

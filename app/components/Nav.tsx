@@ -16,9 +16,8 @@ import profielImage from "../../public/profileImg.jpg";
 import { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 
-export default function Nav({ user }: Session) {
+export default function Nav() {
 
-  console.log(user)
 
   return (
     <div className="shadow-sm border-b bg-white sticky top-0 z-50">
@@ -56,7 +55,6 @@ export default function Nav({ user }: Session) {
           <HomeIcon className="navBtn" />
           <Bars3Icon className="md:hidden cursor-pointer h-6" />
 
-          {user ? (
             <>
               <div className="navBtn relative">
                 <PaperAirplaneIcon className="navBtn -rotate-45" />
@@ -69,7 +67,7 @@ export default function Nav({ user }: Session) {
               <HeartIcon className="navBtn" />
               <a href="/api/auth/signout">
               <Image
-                src={user.image as string}
+                src={profielImage}
                 className="h-10 w-10 rounded-full cursor-pointer"
                 alt="Profile Image"
                 height={20}
@@ -77,11 +75,6 @@ export default function Nav({ user }: Session) {
 
               /></a>
             </>
-          ) : (
-            <button onClick={() => signIn} className="text-blue-400">
-              <a href="/api/auth/signin">Sign in</a>
-            </button>
-          )}
         </div>
       </div>
     </div>
