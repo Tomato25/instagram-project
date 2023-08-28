@@ -12,31 +12,42 @@ import {
   PaperAirplaneIcon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/solid";
-import profielImage from "../../public/profileImg.jpg";
-import { Session } from "next-auth";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
+import {useRecoilState} from "recoil"
+import { modalState } from "@/atoms/modalAtom";
+
 
 export default function Nav() {
+  
+  const { data: session } = useSession();
+  const [open, setOpen] = useRecoilState(modalState)
 
-
+  console.log(session);
   return (
     <div className="shadow-sm border-b bg-white sticky top-0 z-50">
       <div className="flex justify-between bg-white max-w-6xl mx-5 lg:mx-auto">
         <div className="relative hidden lg:inline-grid w-24  cursor-pointer">
-          <Image
-            src={Logo}
-            layout="fill"
-            alt="Instagram logo"
-            objectFit="contain"
-          />
+          <Link href="/">
+            {" "}
+            <Image
+              src={Logo}
+              layout="fill"
+              alt="Instagram logo"
+              objectFit="contain"
+            />
+          </Link>
         </div>
         <div className="relative w-8 lg:hidden flex-shrink-0 cursor-pointer">
-          <Image
-            src={LogoMobile}
-            layout="fill"
-            alt="Instagram logo"
-            objectFit="contain"
-          />
+          <Link href="/">
+            {" "}
+            <Image
+              src={LogoMobile}
+              layout="fill"
+              alt="Instagram logo"
+              objectFit="contain"
+            />
+          </Link>
         </div>
 
         <div className="max-w-xs">
@@ -52,9 +63,11 @@ export default function Nav() {
           </div>
         </div>
         <div className="flex items-center justify-end space-x-4">
-          <HomeIcon className="navBtn" />
+          <Link href="/">
+            <HomeIcon className="navBtn" />
+          </Link>
           <Bars3Icon className="md:hidden cursor-pointer h-6" />
-
+          {session ? (
             <>
               <div className="navBtn relative">
                 <PaperAirplaneIcon className="navBtn -rotate-45" />
@@ -62,19 +75,22 @@ export default function Nav() {
                   3
                 </div>
               </div>
-              <PlusCircleIcon className="navBtn" />
+              <PlusCircleIcon onClick={() => setOpen(true)} className="navBtn" />
               <UserGroupIcon className="navBtn" />
               <HeartIcon className="navBtn" />
               <a href="/api/auth/signout">
-              <Image
-                src={profielImage}
-                className="h-10 w-10 rounded-full cursor-pointer"
-                alt="Profile Image"
-                height={20}
-                width={20}
-
-              /></a>
+                <Image
+                  src={session.user?.image as string}
+                  className=" rounded-full cursor-pointer"
+                  alt="Profile Image"
+                  height={40}
+                  width={40}
+                />
+              </a>
             </>
+          ) : (
+            <button onClick={() => signIn()}>Sign in</button>
+          )}
         </div>
       </div>
     </div>

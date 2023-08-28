@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import Nav from "./components/Nav";
 import { getServerSession } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { NextAuthProvider } from "./components/NextAuthProvider";
+import Hydrate from "./components/Hydrate";
+import Modal from "./components/Modal";
 
 export const metadata: Metadata = {
   title: "Instagram",
@@ -15,12 +18,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
 
+  
+
   return (
     <html lang="en">
-      <body className="bg-gray-50 h-screen overflow-y-scroll scrollbar-hide">
+      <Hydrate>
+      <NextAuthProvider>
         <Nav />
         {children}
-      </body>
+        <Modal />
+        </NextAuthProvider>
+        </Hydrate>
     </html>
   );
 }
