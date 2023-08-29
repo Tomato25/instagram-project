@@ -6,6 +6,7 @@ import { SessionProvider } from "next-auth/react";
 import { NextAuthProvider } from "./components/NextAuthProvider";
 import Hydrate from "./components/Hydrate";
 import Modal from "./components/Modal";
+import { RecoilRoot } from "recoil";
 
 export const metadata: Metadata = {
   title: "Instagram",
@@ -22,13 +23,15 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <Hydrate>
       <NextAuthProvider>
+      <Hydrate>
+      
         <Nav />
         {children}
         <Modal />
-        </NextAuthProvider>
+        
         </Hydrate>
+        </NextAuthProvider>
     </html>
   );
 }
