@@ -24,7 +24,7 @@ export default function SignIn() {
           />
         <h2>This website is for educational purposes only </h2>
         <div className="mt-40">
-          {Object.values(providers).map((provider) => {
+          {providers && Object.values(providers).map((provider) => {
             return <SignInBtn name={provider.name} key={provider.id} />;
           })}
         </div>
