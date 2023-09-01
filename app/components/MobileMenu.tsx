@@ -1,5 +1,4 @@
 "use client";
-import motion from "framer-motion";
 import { menuState } from "@/atoms/menuAtom";
 import { useRecoilState } from "recoil";
 import {
