@@ -75,7 +75,7 @@ export default function Modal() {
           <motion.div
             layout
             onClick={(e) => e.stopPropagation()}
-            className="bg-white inline-block align-bottom rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
+            className="bg-base-100 inline-block align-bottom rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
           >
             <div>
               {selectedFile ? (
@@ -93,7 +93,7 @@ export default function Modal() {
               )}
 
               <div className="mt-3 text-center sm:mt-5">
-                <h3 className="text-lg loading-6 font-medium text-gray-900">
+                <h3 className="text-lg loading-6 font-medium">
                   Upload a photo
                 </h3>
                 <div>
@@ -105,7 +105,7 @@ export default function Modal() {
                   />
                 </div>
                 <div>
-                  <input className="border-none focus:ring-0 w-full text-center" type="text" ref={captionRef} placeholder="Please enter a caption" />
+                  <input className="border-none focus:ring-0 w-full text-center bg-base-100" type="text" ref={captionRef} placeholder="Please enter a caption" />
                 </div>
               </div>
               <div className="mt-5 sm:mt-6">

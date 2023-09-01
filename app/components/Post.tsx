@@ -7,17 +7,19 @@ import {
   PaperAirplaneIcon,
   ChatBubbleOvalLeftIcon,
 } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconFilled } from "@heroicons/react/24/solid";
+import { HeartIcon as HeartIconFilled, BookmarkIcon as BookmarkIconFilled } from "@heroicons/react/24/solid";
 import {
   addDoc,
   collection,
   deleteDoc,
   doc,
+  getDoc,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -29,8 +31,11 @@ export default function Post({ id, username, userImg, img, caption }) {
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [saved, setSaved] = useState([]);
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false)
+  const [hasSaved, setHasSaved] = useState(false)
+
 
   useEffect(
     () =>
@@ -41,11 +46,39 @@ export default function Post({ id, username, userImg, img, caption }) {
     [db, id]
   );
 
+
   useEffect(() => {
         setHasLiked(likes.findIndex(like => like.id === session?.user.uid) !== -1)
 
 
   }, [likes])
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "savedBy"), (snapshot) =>
+        setSaved(snapshot.docs)
+      ),
+
+    [db, id]
+  );
+
+  useEffect(() => {
+    const postRef = doc(db, "posts", id);
+
+    const unsubscribe = onSnapshot(postRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        const postData = docSnapshot.data();
+        const savedByArray = postData.savedBy || [];
+        const isUserSaved = savedByArray.includes(session?.user.username);
+        setHasSaved(isUserSaved);
+      }
+    });
+
+    return () => {
+      // Unsubscribe from the snapshot listener when the component unmounts
+      unsubscribe();
+    };
+  }, [db, id, session?.user.username]);
 
   useEffect(
     () =>
@@ -65,9 +98,31 @@ export default function Post({ id, username, userImg, img, caption }) {
             await deleteDoc(doc(db, "posts" , id, "likes" , session?.user.uid))
     } else {
     await setDoc(doc(db, "posts", id , "likes", session?.user.uid), {
-            username: session?.user.username
+            username: session?.user.username,
     })
 }
+  }
+
+  const savePost = async () => { 
+
+    const postDoc = await getDoc(doc(db, "posts", id ));
+
+    if (postDoc.exists()) {
+      const postData = postDoc.data();
+      const newSavedBy = postData.savedBy || [];
+
+      const usernameIndex = newSavedBy.indexOf(session?.user.username);
+
+      if (usernameIndex !== -1) {
+        newSavedBy.splice(usernameIndex, 1); // Remove the username
+      } else {
+        newSavedBy.push(session?.user.username); // Add the username
+      }
+  
+      await updateDoc(doc(db, "posts", id), {
+        savedBy: newSavedBy
+      });
+    }
   }
 
   const sendComment = async (e) => {
@@ -114,7 +169,12 @@ export default function Post({ id, username, userImg, img, caption }) {
             <ChatBubbleOvalLeftIcon className="h-7 hover:scale-125 cursor-pointer transition-all duration-150 ease-out" />
             <PaperAirplaneIcon className="hover:scale-125 cursor-pointer transition-all duration-150 ease-out -rotate-45 h-7" />
           </div>
-          <BookmarkIcon className="h-7 hover:scale-125 cursor-pointer transition-all duration-150 ease-out" />
+          {hasSaved ? (
+
+            <BookmarkIconFilled onClick={() => savePost()} className="h-7 hover:scale-125 cursor-pointer transition-all duration-150 ease-out text-blue-500" />
+          ):(
+            <BookmarkIcon onClick={() => savePost()} className="h-7 hover:scale-125 cursor-pointer transition-all duration-150 ease-out" />
+          )}
         </div>
       )}
       <p className="p-5 truncate">
@@ -126,7 +186,7 @@ export default function Post({ id, username, userImg, img, caption }) {
       </p>
 
       {comments.length > 0 && (
-        <div className="ml-10 h-20 overflow-y-scroll scrollbar-thumb-black scrollbar-thin">
+        <div className="ml-10 h-20 overflow-y-scroll scrollbar-thumb-primary scrollbar-thin">
           {comments.map((comment) => (
             <div
               key={comment.data().id}
@@ -163,7 +223,7 @@ export default function Post({ id, username, userImg, img, caption }) {
             type="submit"
             disabled={!comment.trim()}
             onClick={sendComment}
-            className="font-semibold text-blue-400"
+            className="font-semibold text-blue-400 hover:scale-110 transition-all duration-150 ease-out"
           >
             Post
           </button>

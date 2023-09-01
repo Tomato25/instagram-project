@@ -7,6 +7,7 @@ import { NextAuthProvider } from "./components/NextAuthProvider";
 import Hydrate from "./components/Hydrate";
 import Modal from "./components/Modal";
 import { RecoilRoot } from "recoil";
+import MobileMenu from "./components/MobileMenu";
 
 export const metadata: Metadata = {
   title: "Instagram",
@@ -29,6 +30,7 @@ export default async function RootLayout({
         <Nav />
         {children}
         <Modal />
+        <MobileMenu />
         
         </Hydrate>
         </NextAuthProvider>

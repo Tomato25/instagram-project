@@ -15,13 +15,14 @@ export default function SignIn() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2 -mt-56 px-14 text-center">
+      <div className="flex flex-col items-center justify-center h-screen py-2 -pt-56 px-14 text-center overflow-hidden">
       <Image
             src={Logo}
             alt="Instagram logo"
             objectFit="contain"
             className="w-80"
           />
+        <h2>This website is for educational purposes only </h2>
         <div className="mt-40">
           {Object.values(providers).map((provider) => {
             return <SignInBtn name={provider.name} key={provider.id} />;

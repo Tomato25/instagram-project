@@ -4,6 +4,7 @@ import {getStorage} from "firebase/storage"
 
 
 const firebaseConfig = {
+  
   apiKey: "AIzaSyAeK4FfrS44Sjans_r3EKROK7VCy_eLlXg",
   authDomain: "instagram-clone-a1dcc.firebaseapp.com",
   projectId: "instagram-clone-a1dcc",
