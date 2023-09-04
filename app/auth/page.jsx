@@ -12,7 +12,7 @@ async function getData() {
 
 export default function SignIn() {
   const providers = use(getData());
-
+  console.log(providers)
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen py-2 -pt-56 px-14 text-center overflow-hidden">
