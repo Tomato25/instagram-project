@@ -6,12 +6,14 @@ import Logo from "../../public/logo.png";
 
 async function getData() {
   const providers = await getProviders();
-
+  console.log(providers)
   return providers;
 }
 
 export default function SignIn() {
   const providers = use(getData());
+  console.log(providers)
+
   console.log(providers)
   return (
     <>

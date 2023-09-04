@@ -69,7 +69,7 @@ export default function Modal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setOpen(false)}
-          className="fixed w-full h-screen left-0 top-0 bg-black/25 flex items-center justify-center "
+          className="fixed w-full h-screen left-0 top-0 bg-black/25 flex items-center justify-center overflow-y-scroll"
         >
           {/* Cart */}
           <motion.div
